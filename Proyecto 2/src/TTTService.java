@@ -10,6 +10,7 @@ import java.rmi.*;
  */
 public interface TTTService extends Remote{
     
+    public void registrarCompradorFrutas(TTTClientRemote newClient)      throws RemoteException;
     public void registrarfrutas(TTTClientRemote newClient)      throws RemoteException;
     public void registrarproductos(TTTClientRemote newClient)   throws RemoteException;
     public void obtenerfruta(String n)                            throws RemoteException;

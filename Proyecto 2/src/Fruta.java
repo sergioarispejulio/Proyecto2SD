@@ -9,11 +9,9 @@ import java.awt.event.ActionListener;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 
-/**
- *
- * @author SergioArispe
- */
+
 public class Fruta implements ActionListener, TTTClientRemote{
     
     protected TTTService remoteTTTBoard;
@@ -33,7 +31,7 @@ public class Fruta implements ActionListener, TTTClientRemote{
          // the next two lines allow the server to call updateBoard:
          //
          UnicastRemoteObject.exportObject(this);
-         remoteTTTBoard.registrarfrutas(this);
+         remoteTTTBoard.registrarCompradorFrutas(this);
          System.out.println("Conectado...");
       }
       catch ( Exception e )
@@ -49,7 +47,7 @@ public class Fruta implements ActionListener, TTTClientRemote{
     }
 
     public void enviar(Producto new_board) throws RemoteException {
-        ;
+        
     }
     public void ofertarProducto( String nomProd,String compania,float costo,Integer cantidad,float costoEnvio,Integer idCompania) 
     {
@@ -78,10 +76,13 @@ public class Fruta implements ActionListener, TTTClientRemote{
          System.exit(1);
        }
     }
+    public void actualizarFrutas(String po) throws RemoteException
+    {
     
+    }
     public static void main(String[] args) {
-       Fruta nue = new Fruta();
-       nue.enviarfruta();
+       //Fruta nue = new Fruta();
+       //nue.enviarfruta();
        
        
        

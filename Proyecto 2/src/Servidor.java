@@ -16,12 +16,13 @@ public class Servidor extends UnicastRemoteObject implements TTTService{
    public final static String ServiceName = "homer-ttt";
    public final static int ServicePort = 8186;
    
-   public static ArrayList<Producto> lista_frutas;
-   public static ArrayList<Producto> lista_producto;
    
    List vendedoresfrutas = Collections.synchronizedList(new LinkedList());
    List vendedoresproducto = Collections.synchronizedList(new LinkedList());
+   List compradoresFrutas = Collections.synchronizedList(new LinkedList());
+   List compradoresProducto = Collections.synchronizedList(new LinkedList());
    
+   protected productosGeneral frutasProductos = new productosGeneral();
    
    public Servidor() throws RemoteException
    {
@@ -31,6 +32,12 @@ public class Servidor extends UnicastRemoteObject implements TTTService{
    public void registrarfrutas(TTTClientRemote newClient) throws RemoteException
    {
       vendedoresfrutas.add(newClient);
+      System.out.println("vendedor frutas registrado");
+   }
+   public void registrarCompradorFrutas(TTTClientRemote newClient) throws RemoteException
+   {
+       compradoresFrutas.add(newClient);
+       System.out.println("comprador frutas registrado");
    }
    
    public void registrarproductos(TTTClientRemote newClient) throws RemoteException
@@ -43,7 +50,7 @@ public class Servidor extends UnicastRemoteObject implements TTTService{
        Producto nue = new Producto();
        System.out.println(n);
        //nue.Cantidad = n;
-       lista_frutas.add(nue);
+       frutasProductos.lista_frutas.add(nue);
        System.out.println(nue.Nombre_Producto + " " + nue.Compania + " " + nue.Costo + " " + nue.Costo_Envio + " " + nue.Cantidad + " ANTES");
        mostrarfrutas();
    }
@@ -55,19 +62,41 @@ public class Servidor extends UnicastRemoteObject implements TTTService{
         nuevo.Cantidad = cantidad;
         nuevo.Costo_Envio = costoEnvio;
         nuevo.id_compania = idCompania;
-        lista_frutas.add(nuevo);
-       System.out.println("siiii");
+        frutasProductos.lista_frutas.add(nuevo);
+       System.out.println("si "+nomProd);
+       actualizarClientesQueBuscanFrutas();
    }
    public void mostrarfrutas() 
    {
-       for (Producto aux : lista_frutas) {
+       for (Producto aux : frutasProductos.lista_frutas) {
            System.out.println(aux.Nombre_Producto + " " + aux.Compania + " " + aux.Costo + " " + aux.Costo_Envio + " " + aux.Cantidad);
        }
    }
    
+   public void actualizarClientesQueBuscanFrutas()
+   {
+      Iterator it = compradoresFrutas.iterator();
+      System.out.println("tam: "+compradoresFrutas.size());
+      while ( it.hasNext() )
+      {
+         TTTClientRemote client = (TTTClientRemote)it.next();
+         try
+         {
+            //client.actualizarFrutas(frutasProductos);
+             client.actualizarFrutas("del servidor");
+         }
+         catch ( Exception e )
+         {
+            // note system does not halt in such situations!
+            System.out.println("Could not update client " + client.toString());
+         }
+      }
+          
+   }
+   
    public static void main(String args[])
    {
-      lista_frutas = new ArrayList<Producto>();
+      //lista_frutas = new ArrayList<Producto>();
       System.out.println("Initializing TTTService...");
       try
       {
