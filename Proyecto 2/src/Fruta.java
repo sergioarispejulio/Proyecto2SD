@@ -51,11 +51,11 @@ public class Fruta implements ActionListener, TTTClientRemote{
     public void enviar(Producto new_board) throws RemoteException {
         ;
     }
-    public void ofertarProducto(Producto nue) 
+    public void ofertarProducto( String nomProd,String compania,float costo,Integer cantidad,float costoEnvio,Integer idCompania) 
     {
         try
         {
-            remoteTTTBoard.serOfertarProducto("averr");
+            remoteTTTBoard.serOfertarProducto(nomProd,compania,costo,cantidad,costoEnvio,idCompania);
         }
         catch( RemoteException e )
         {

@@ -47,10 +47,15 @@ public class Servidor extends UnicastRemoteObject implements TTTService{
        System.out.println(nue.Nombre_Producto + " " + nue.Compania + " " + nue.Costo + " " + nue.Costo_Envio + " " + nue.Cantidad + " ANTES");
        mostrarfrutas();
    }
-   public void serOfertarProducto(String nue) throws RemoteException
-   {
-       System.out.println("llega");
-       //lista_producto.add(nue);
+   public void serOfertarProducto( String nomProd,String compania,float costo,Integer cantidad,float costoEnvio,Integer idCompania) throws RemoteException
+   {    Producto nuevo = new Producto();
+        nuevo.Nombre_Producto = nomProd;
+        nuevo.Compania = compania;
+        nuevo.Costo = costo;
+        nuevo.Cantidad = cantidad;
+        nuevo.Costo_Envio = costoEnvio;
+        nuevo.id_compania = idCompania;
+        lista_frutas.add(nuevo);
        System.out.println("siiii");
    }
    public void mostrarfrutas() 

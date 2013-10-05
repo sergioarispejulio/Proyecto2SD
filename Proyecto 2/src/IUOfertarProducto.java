@@ -162,15 +162,14 @@ public class IUOfertarProducto extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void _ofertarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__ofertarProductoActionPerformed
-        Producto nuevo = new Producto();
-        nuevo.Nombre_Producto = _nombreProducto.getText();
-        nuevo.Compania = _nombreCompania.getText();
-       nuevo.Costo = Float.parseFloat(_precioProducto.getText());
-       nuevo.Cantidad = Integer.parseInt(_cantidadProducto.getText());
-       nuevo.Costo_Envio = Float.parseFloat(_costoEnvioUnidad.getText());
-       nuevo.id_compania = Integer.parseInt(_idCompania.getText());
+       String nombreProducto = _nombreProducto.getText();
+       String compania = _nombreCompania.getText();
+       float costo = Float.parseFloat(_precioProducto.getText());
+       Integer cantidad = Integer.parseInt(_cantidadProducto.getText());
+       float costoEnvio = Float.parseFloat(_costoEnvioUnidad.getText());
+       Integer idCompania = Integer.parseInt(_idCompania.getText());
        
-        nue.ofertarProducto(nuevo);
+        nue.ofertarProducto(nombreProducto,compania,costo,cantidad,costoEnvio,idCompania);
         
     }//GEN-LAST:event__ofertarProductoActionPerformed
 
