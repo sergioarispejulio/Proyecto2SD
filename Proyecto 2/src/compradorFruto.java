@@ -29,7 +29,7 @@ public class compradorFruto implements ActionListener, TTTClientRemote {
              // the next two lines allow the server to call updateBoard:
              //
              UnicastRemoteObject.exportObject(this);
-             remoteTTTBoard.registrarfrutas(this);
+             remoteTTTBoard.registrarvendedoresfrutas(this);
              System.out.println("Conectado...");
           }
           catch ( Exception e )
@@ -58,5 +58,10 @@ public class compradorFruto implements ActionListener, TTTClientRemote {
        
        
    }
+
+    @Override
+    public String obtenernombrecompañia() throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
    
 }

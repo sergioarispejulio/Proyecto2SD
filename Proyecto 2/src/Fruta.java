@@ -31,7 +31,7 @@ public class Fruta implements ActionListener, TTTClientRemote{
          // the next two lines allow the server to call updateBoard:
          //
          UnicastRemoteObject.exportObject(this);
-         remoteTTTBoard.registrarCompradorFrutas(this);
+         remoteTTTBoard.registrarCompradoresFrutas(this);
          System.out.println("Conectado...");
       }
       catch ( Exception e )
@@ -51,7 +51,7 @@ public class Fruta implements ActionListener, TTTClientRemote{
     }
     public void ofertarProducto( String nomProd,String compania,float costo,Integer cantidad,float costoEnvio,Integer idCompania) 
     {
-        try
+        /*try
         {
             remoteTTTBoard.serOfertarProducto(nomProd,compania,costo,cantidad,costoEnvio,idCompania);
         }
@@ -60,11 +60,11 @@ public class Fruta implements ActionListener, TTTClientRemote{
            System.out.println("Exception: " + e.getMessage());
            e.printStackTrace();
            System.exit(1);
-         }
+         }*/
     }
     public void enviarfruta()
     {
-        try
+       /* try
        {
            n = "1";
            remoteTTTBoard.obtenerfruta("hola");
@@ -74,7 +74,7 @@ public class Fruta implements ActionListener, TTTClientRemote{
          System.out.println("Exception: " + e.getMessage());
          e.printStackTrace();
          System.exit(1);
-       }
+       }*/
     }
     public void actualizarFrutas(String po) throws RemoteException
     {
@@ -89,5 +89,10 @@ public class Fruta implements ActionListener, TTTClientRemote{
        IUOfertarProducto prud = new IUOfertarProducto();
        prud.setVisible(true);
    }
+
+    @Override
+    public String obtenernombrecompañia() throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

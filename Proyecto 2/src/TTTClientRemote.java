@@ -11,4 +11,5 @@ public interface TTTClientRemote extends Remote
 {
    void enviar(Producto new_board)                          throws RemoteException;
    void actualizarFrutas(String pro)           throws RemoteException;
+   String obtenernombrecompañia()           throws RemoteException;
 }

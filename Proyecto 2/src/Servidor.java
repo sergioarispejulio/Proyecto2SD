@@ -29,43 +29,152 @@ public class Servidor extends UnicastRemoteObject implements TTTService{
       super();
    }
    
-   public void registrarfrutas(TTTClientRemote newClient) throws RemoteException
+   public void registrarvendedoresfrutas(TTTClientRemote newClient) throws RemoteException
    {
       vendedoresfrutas.add(newClient);
       System.out.println("vendedor frutas registrado");
    }
-   public void registrarCompradorFrutas(TTTClientRemote newClient) throws RemoteException
+   public void registrarCompradoresFrutas(TTTClientRemote newClient) throws RemoteException
    {
        compradoresFrutas.add(newClient);
        System.out.println("comprador frutas registrado");
    }
-   
-   public void registrarproductos(TTTClientRemote newClient) throws RemoteException
+   public void registrarvendedoresProductos(TTTClientRemote newClient)      throws RemoteException
    {
-      vendedoresproducto.add(newClient);
+      vendedoresfrutas.add(newClient);
+      System.out.println("vendedor producto registrado"); 
+   }
+   public void registrarCompradoresProductos(TTTClientRemote newClient)      throws RemoteException
+   {
+      vendedoresfrutas.add(newClient);
+      System.out.println("comprador producto registrado");
    }
    
-   public void obtenerfruta(String n) throws RemoteException
+   public ArrayList<Producto> obtenerfrutas(String nomProd,float costo,float cantidad) throws RemoteException
    {
-       Producto nue = new Producto();
-       System.out.println(n);
-       //nue.Cantidad = n;
-       frutasProductos.lista_frutas.add(nue);
-       System.out.println(nue.Nombre_Producto + " " + nue.Compania + " " + nue.Costo + " " + nue.Costo_Envio + " " + nue.Cantidad + " ANTES");
-       mostrarfrutas();
+       ArrayList<Producto> resultado = new ArrayList<Producto>();
+       for (Producto objecto : frutasProductos.lista_frutas) {
+           if(objecto.Nombre_Producto == nomProd && objecto.Costo <= costo && objecto.Cantidad >= cantidad && objecto.vendido == false)
+           {
+               resultado.add(objecto);
+           }
+       }
+       return resultado;
    }
-   public void serOfertarProducto( String nomProd,String compania,float costo,Integer cantidad,float costoEnvio,Integer idCompania) throws RemoteException
-   {    Producto nuevo = new Producto();
+   
+   public ArrayList<Producto> obtenerproducto(String nomProd,float costo,float cantidad) throws RemoteException
+   {
+       ArrayList<Producto> resultado = new ArrayList<Producto>();
+       for (Producto objecto : frutasProductos.lista_frutas) {
+           if(objecto.Nombre_Producto == nomProd && objecto.Costo <= costo && objecto.Cantidad >= cantidad && objecto.vendido == false)
+           {
+               resultado.add(objecto);
+           }
+       }
+       System.out.println("Se dio objetos");
+       return resultado;
+   }
+   
+   public void agregarfruta( String nomProd,String compania,float costo,Integer cantidad,float costoEnvio,Integer idCompania) throws RemoteException
+   {    
+        Producto nuevo = new Producto();
         nuevo.Nombre_Producto = nomProd;
         nuevo.Compania = compania;
         nuevo.Costo = costo;
         nuevo.Cantidad = cantidad;
         nuevo.Costo_Envio = costoEnvio;
         nuevo.id_compania = idCompania;
+        nuevo.vendido = false;
         frutasProductos.lista_frutas.add(nuevo);
-       System.out.println("si "+nomProd);
-       actualizarClientesQueBuscanFrutas();
+        System.out.println("si "+nomProd);
+        actualizarClientesQueBuscanFrutas();
    }
+   
+   public void agregarproducto(String nomProd,String compania,float costo,Integer cantidad,float costoEnvio,Integer idCompania) throws RemoteException
+   {
+       Producto nuevo = new Producto();
+        nuevo.Nombre_Producto = nomProd;
+        nuevo.Compania = compania;
+        nuevo.Costo = costo;
+        nuevo.Cantidad = cantidad;
+        nuevo.Costo_Envio = costoEnvio;
+        nuevo.id_compania = idCompania;
+        nuevo.vendido = false;
+        frutasProductos.lista_producto.add(nuevo);
+   }
+   
+   public void comprarfruta(String nomProd,String compania,float costo,Integer cantidad,float costoEnvio) throws RemoteException
+   {
+        Producto nuevo = new Producto();
+        Producto selec = new Producto();
+        nuevo.Nombre_Producto = nomProd;
+        nuevo.Compania = compania;
+        nuevo.Costo = costo;
+        nuevo.Cantidad = cantidad;
+        nuevo.Costo_Envio = costoEnvio;
+        for (Producto objecto : frutasProductos.lista_frutas) {
+            if(objecto.comparar(nuevo))
+            {
+                selec = objecto;
+                objecto.vendido = true;
+                break;
+            }
+        }
+        Iterator it = vendedoresfrutas.iterator();
+        while ( it.hasNext() )
+        {
+           TTTClientRemote client = (TTTClientRemote)it.next();
+           try
+           {
+              if(client.obtenernombrecompañia() == selec.Compania)
+              {
+                  ;//Aquí se actualiza al que oferto la fruta de que su producto se vendio
+              }
+           }
+           catch ( Exception e )
+           {
+              // note system does not halt in such situations!
+              System.out.println("Could not update client " + client.toString());
+           }
+        }
+   }
+   
+   public void comprarproducto(String nomProd,String compania,float costo,Integer cantidad,float costoEnvio)                throws RemoteException
+   {
+        Producto nuevo = new Producto();
+        Producto selec = new Producto();
+        nuevo.Nombre_Producto = nomProd;
+        nuevo.Compania = compania;
+        nuevo.Costo = costo;
+        nuevo.Cantidad = cantidad;
+        nuevo.Costo_Envio = costoEnvio;
+        for (Producto objecto : frutasProductos.lista_producto) {
+            if(objecto.comparar(nuevo))
+            {
+                selec = objecto;
+                objecto.vendido = true;
+                break;
+            }
+        }
+        Iterator it = vendedoresproducto.iterator();
+        while ( it.hasNext() )
+        {
+           TTTClientRemote client = (TTTClientRemote)it.next();
+           try
+           {
+              if(client.obtenernombrecompañia() == selec.Compania)
+              {
+                  ;//Aquí se actualiza al que oferto la fruta de que su producto se vendio
+              }
+           }
+           catch ( Exception e )
+           {
+              // note system does not halt in such situations!
+              System.out.println("Could not update client " + client.toString());
+           }
+        }
+   }
+   
    public void mostrarfrutas() 
    {
        for (Producto aux : frutasProductos.lista_frutas) {
